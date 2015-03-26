@@ -15,8 +15,14 @@ exports = module.exports = Istanbul;
  * @public
  */
 function Istanbul(runner) {
+    var failed = false;
+
+    runner.on('fail', function(test, err){
+        failed = true;
+    });
 
     runner.on('end', function(){
+        if (failed) return;
 
         var reporters;
         if (process.env.ISTANBUL_REPORTERS) {
